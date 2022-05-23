@@ -3,7 +3,6 @@ package fr.choibajil.lift.feature.lift;
 import fr.choibajil.lift.model.building.Building;
 import fr.choibajil.lift.model.common.command.GoCommand;
 import fr.choibajil.lift.model.floor.FloorIdentifier;
-import fr.choibajil.lift.model.floor.Monitor;
 import fr.choibajil.lift.model.lift.Lift;
 import fr.choibajil.lift.model.lift.LiftButton;
 import fr.choibajil.lift.service.LiftService;
@@ -13,7 +12,7 @@ import io.cucumber.java.fr.Quand;
 import io.cucumber.java.fr.Étantdonné;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
+import java.util.HashSet;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -31,51 +30,36 @@ public class LiftSteps {
 
     @Étantdonné("un immeuble de cinq étages")
     public void un_immeuble_de_cinq_etages() {
-        liftScenarioState.setBuilding(Building
-                .builder()
-                .monitors(Set.of(
-                        Monitor.of(new FloorIdentifier("0")),
-                        Monitor.of(new FloorIdentifier("1")),
-                        Monitor.of(new FloorIdentifier("2")),
-                        Monitor.of(new FloorIdentifier("3")),
-                        Monitor.of(new FloorIdentifier("4"))
-                ))
-                .build());
+        liftScenarioState.setBuilding(
+                new Building(new HashSet<>(asList(
+                        new FloorIdentifier("0"),
+                        new FloorIdentifier("1"),
+                        new FloorIdentifier("2"),
+                        new FloorIdentifier("3"),
+                        new FloorIdentifier("4"))),
+                        1));
     }
 
     @Étantdonné("un ascenseur situé au premier étage")
     public void un_ascenseur_situé_au_premier_étage() {
-        liftScenarioState.getBuilding().setLifts(singletonList(Lift.of((new FloorIdentifier("1")), asList(
-                new LiftButton(new FloorIdentifier("0")),
-                new LiftButton(new FloorIdentifier("1")),
-                new LiftButton(new FloorIdentifier("2")),
-                new LiftButton(new FloorIdentifier("3")),
-                new LiftButton(new FloorIdentifier("4"))
-        ))));
+        liftScenarioState.getBuilding().getLifts().get(0).setCurrentFloor(new FloorIdentifier("1"));
     }
 
     @Étantdonné("un ascenseur situé au deuxième étage")
     public void unAscenseurSituéAuDeuxièmeÉtage() {
-        liftScenarioState.getBuilding().setLifts(singletonList(
-                Lift.of((new FloorIdentifier("2")), asList(
-                        new LiftButton(new FloorIdentifier("0")),
-                        new LiftButton(new FloorIdentifier("1")),
-                        new LiftButton(new FloorIdentifier("2")),
-                        new LiftButton(new FloorIdentifier("3")),
-                        new LiftButton(new FloorIdentifier("4"))
-                ))));
+        liftScenarioState.getBuilding().getLifts().get(0).setCurrentFloor(new FloorIdentifier("1"));
     }
 
     @Étantdonné("un ascenseur se déplaçant au premier étage")
     public void unAscenseurSeDéplaçantAuPremierÉtage() {
         liftScenarioState.getBuilding().setLifts(singletonList(
-                spy(Lift.of((new FloorIdentifier("2")), asList(
-                        new LiftButton(new FloorIdentifier("0")),
-                        new LiftButton(new FloorIdentifier("1")),
-                        new LiftButton(new FloorIdentifier("2")),
-                        new LiftButton(new FloorIdentifier("3")),
-                        new LiftButton(new FloorIdentifier("4"))
-                )))));
+                spy(new Lift(new FloorIdentifier("1"),
+                        new HashSet<>(asList(
+                                new FloorIdentifier("0"),
+                                new FloorIdentifier("1"),
+                                new FloorIdentifier("2"),
+                                new FloorIdentifier("3"),
+                                new FloorIdentifier("4")))))));
         liftScenarioState.getBuilding().getLifts().get(0).addLiftCommand(GoCommand.of(new FloorIdentifier("1")));
 
     }
@@ -97,7 +81,7 @@ public class LiftSteps {
 
     @Quand("l'ascenseur arrive au premier étage")
     public void lAscenseurArriveAuPremierÉtage() {
-        liftScenarioState.getBuilding().getLifts().get(0).executeScheduledCommands();
+        liftScenarioState.getBuilding().getLifts().get(0).executeAllCommands();
     }
 
     @Alors("l'ascenseur reçoit une demande pour aller au deuxième étage")

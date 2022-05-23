@@ -2,9 +2,11 @@ package fr.choibajil.lift.model.common.command;
 
 import fr.choibajil.lift.model.common.Direction;
 import fr.choibajil.lift.model.floor.FloorIdentifier;
+import fr.choibajil.lift.model.lift.Lift;
 import lombok.AllArgsConstructor;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @AllArgsConstructor(staticName = "of")
 public class CallCommand implements LiftCommand {
@@ -15,13 +17,15 @@ public class CallCommand implements LiftCommand {
 
 
     @Override
-    public void applyNextCommand() {
-
+    public int getPriorityLevel() {
+        return 0;
     }
 
     @Override
-    public int getPriorityLevel() {
-        return 0;
+    public void apply(Lift lift) {
+        lift.setCurrentDirection(Optional.of(direction));
+        lift.setCurrentFloor(sourceFloor);
+
     }
 
 

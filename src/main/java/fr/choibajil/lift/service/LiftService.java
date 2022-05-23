@@ -19,4 +19,8 @@ public class LiftService {
     public void go(final Lift lift, final LiftButton monitorDirectionFloor) {
         lift.addLiftCommand(GoCommand.of(monitorDirectionFloor.floorIdentifier()));
     }
+
+    public void executeNextCommand(Lift lift) {
+        lift.executeNextCommand();
+    }
 }

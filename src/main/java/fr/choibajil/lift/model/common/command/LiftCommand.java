@@ -1,8 +1,11 @@
 package fr.choibajil.lift.model.common.command;
 
+import fr.choibajil.lift.model.lift.Lift;
+
 public interface LiftCommand extends Comparable {
 
-    void applyNextCommand();
 
     int getPriorityLevel();
+
+    void apply(Lift lift);
 }

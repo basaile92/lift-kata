@@ -7,6 +7,4 @@ import lombok.Data;
 class BuildingScenarioState {
 
     private Building building;
-
-    private int numberOfLift;
 }

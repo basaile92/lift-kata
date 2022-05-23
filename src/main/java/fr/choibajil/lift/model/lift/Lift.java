@@ -1,40 +1,61 @@
 package fr.choibajil.lift.model.lift;
 
+import fr.choibajil.lift.model.common.Direction;
 import fr.choibajil.lift.model.common.command.LiftCommand;
 import fr.choibajil.lift.model.floor.FloorIdentifier;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-@RequiredArgsConstructor(staticName = "of")
 @Data
 public
 class Lift {
 
     @NonNull
-    private final FloorIdentifier currentFloor;
+    @Setter
+    private FloorIdentifier currentFloor;
 
-    private final List<LiftButton> buttons;
+    @Setter
+    private Optional<Direction> currentDirection;
 
-    private final TreeSet<LiftCommand> liftCommands = new TreeSet<>();
+    private final Set<LiftButton> buttons;
+
+    private final TreeSet<LiftCommand> liftCommands;
 
     public TreeSet<LiftCommand> getLiftCommands() {
         return liftCommands;
+    }
+
+    public Lift(FloorIdentifier currentFloor, Set<FloorIdentifier> floors) {
+        this.currentFloor = currentFloor;
+        this.currentDirection = Optional.empty();
+        this.buttons = floors.stream().map(LiftButton::new).collect(Collectors.toSet());
+        this.liftCommands = new TreeSet<>();
     }
 
     public void addLiftCommand(final LiftCommand liftCommand) {
         liftCommands.add(liftCommand);
     }
 
-    public void executeScheduledCommands() {
-        liftCommands.forEach(this::applyNextCommandAndDingAndOpenAndCloseDoor);
+    public void executeAllCommands() {
+        IntStream.of(liftCommands.size()).forEach(
+                i -> executeNextCommand()
+        );
+    }
+
+    public void executeNextCommand() {
+        LiftCommand liftCommand = liftCommands.pollFirst();
+        applyNextCommandAndDingAndOpenAndCloseDoor(liftCommand);
     }
 
     private void applyNextCommandAndDingAndOpenAndCloseDoor(final LiftCommand liftCommand) {
-        liftCommand.applyNextCommand();
+        liftCommand.apply(this);
         ding();
         openDoor();
         closeDoor();

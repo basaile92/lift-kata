@@ -11,10 +11,14 @@ import io.cucumber.java.fr.Quand;
 import io.cucumber.java.fr.Étantdonné;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static fr.choibajil.lift.model.common.Direction.UP;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,21 +32,19 @@ public class MonitorSteps {
     @Étantdonné("un immeuble de cinq étages")
     public void un_immeuble_de_cinq_etages() {
         monitorScenarioState.setCurrentMonitor(Monitor.of(new FloorIdentifier("1")));
-        monitorScenarioState.setBuilding(Building
-                .builder()
-                .monitors(Set.of(
-                        Monitor.of(new FloorIdentifier("0")),
-                        monitorScenarioState.getCurrentMonitor(),
-                        Monitor.of(new FloorIdentifier("2")),
-                        Monitor.of(new FloorIdentifier("3")),
-                        Monitor.of(new FloorIdentifier("4"))
-                ))
-                .build());
+        monitorScenarioState.setBuilding(
+                new Building(new HashSet<>(asList(
+                        new FloorIdentifier("0"),
+                        new FloorIdentifier("1"),
+                        new FloorIdentifier("2"),
+                        new FloorIdentifier("3"),
+                        new FloorIdentifier("4"))),
+                        1));
     }
 
     @Étantdonné("un ascenseur situé au premier étage")
     public void un_ascenseur_situé_au_premier_étage() {
-        monitorScenarioState.getBuilding().setLifts(singletonList(Lift.of((new FloorIdentifier("1")), emptyList())));
+        monitorScenarioState.getBuilding().getLifts().get(0).setCurrentFloor(new FloorIdentifier("1"));
     }
 
     @Quand("j'appuie sur le bouton monter du moniteur du premier étage")
