@@ -16,11 +16,11 @@ public class LiftService {
         lift.addLiftCommand(CallCommand.of(monitorSourceFloor.floorIdentifier, floorButton.direction()));
     }
 
-    public void go(final Lift lift, final LiftButton monitorDirectionFloor) {
-        lift.addLiftCommand(GoCommand.of(monitorDirectionFloor.floorIdentifier()));
+    public void go(final Lift lift, final LiftButton button) {
+        lift.addLiftCommand(GoCommand.of(button.floorIdentifier()));
     }
 
-    public void executeNextCommand(Lift lift) {
+    public void executeNextCommand(final Lift lift) {
         lift.executeNextCommand();
     }
 }
