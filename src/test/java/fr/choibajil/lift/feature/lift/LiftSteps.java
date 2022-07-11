@@ -13,6 +13,7 @@ import io.cucumber.java.fr.Étantdonné;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -30,13 +31,14 @@ public class LiftSteps {
 
     @Étantdonné("un immeuble de cinq étages")
     public void un_immeuble_de_cinq_etages() {
+        LinkedHashSet<FloorIdentifier> floors = new LinkedHashSet<>();
+        floors.add(new FloorIdentifier("0"));
+        floors.add(new FloorIdentifier("1"));
+        floors.add(new FloorIdentifier("2"));
+        floors.add(new FloorIdentifier("3"));
+        floors.add(new FloorIdentifier("4"));
         liftScenarioState.setBuilding(
-                new Building(new HashSet<>(asList(
-                        new FloorIdentifier("0"),
-                        new FloorIdentifier("1"),
-                        new FloorIdentifier("2"),
-                        new FloorIdentifier("3"),
-                        new FloorIdentifier("4"))),
+                new Building(floors,
                         1));
     }
 
@@ -52,14 +54,15 @@ public class LiftSteps {
 
     @Étantdonné("un ascenseur se déplaçant au premier étage")
     public void unAscenseurSeDéplaçantAuPremierÉtage() {
+        LinkedHashSet<FloorIdentifier> floors = new LinkedHashSet<>();
+        floors.add(new FloorIdentifier("0"));
+        floors.add(new FloorIdentifier("1"));
+        floors.add(new FloorIdentifier("2"));
+        floors.add(new FloorIdentifier("3"));
+        floors.add(new FloorIdentifier("4"));
+
         liftScenarioState.getBuilding().setLifts(singletonList(
-                spy(new Lift(new FloorIdentifier("1"),
-                        new HashSet<>(asList(
-                                new FloorIdentifier("0"),
-                                new FloorIdentifier("1"),
-                                new FloorIdentifier("2"),
-                                new FloorIdentifier("3"),
-                                new FloorIdentifier("4")))))));
+                spy(new Lift(new FloorIdentifier("1"), floors))));
         liftScenarioState.getBuilding().getLifts().get(0).addLiftCommand(GoCommand.of(new FloorIdentifier("1")));
 
     }

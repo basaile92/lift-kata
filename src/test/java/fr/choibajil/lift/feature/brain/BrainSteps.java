@@ -14,6 +14,7 @@ import io.cucumber.java.fr.Quand;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class BrainSteps {
 
     @Etantdonné("un building avec les étages ordonnés:{string},{string},{string},{string},{string},{string}")
     public void unBuildingAvecLesÉtagesOrdonnés(final String etage1, final String etage2, final String etage3, final String etage4, final String etage5, final String etage6) {
-        final Set<FloorIdentifier> floorSet = new HashSet<>();
+        final LinkedHashSet<FloorIdentifier> floorSet = new LinkedHashSet<>();
         floorSet.add(new FloorIdentifier(etage1));
         floorSet.add(new FloorIdentifier(etage2));
         floorSet.add(new FloorIdentifier(etage3));

@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -25,8 +26,11 @@ class GoCommandTest {
     void whenApplyThenItShouldChangeCurrentDirectionAndCurrentFloor() {
         // GIVEN
         final GoCommand goCommand = GoCommand.of(new FloorIdentifier("5"));
+        LinkedHashSet<FloorIdentifier> floors = new LinkedHashSet<FloorIdentifier>();
+        floors.add(new FloorIdentifier("1"));
+        floors.add(new FloorIdentifier("5"));
         final Lift lift = new Lift(new FloorIdentifier("1"),
-                Set.of(new FloorIdentifier("1"), new FloorIdentifier("5")));
+                floors);
 
         // WHEN
         goCommand.apply(lift);

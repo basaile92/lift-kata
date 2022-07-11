@@ -4,6 +4,7 @@ import fr.choibajil.lift.model.floor.FloorIdentifier;
 import fr.choibajil.lift.model.floor.Monitor;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -14,8 +15,10 @@ class BuildingTest {
     @Test
     void givenABuildingWithTwoFloors_whenMonitorOfIsCalledOfExistingFloor_thenItShouldReturnFloorMonitor() {
         // GIVEN
-        final Set<FloorIdentifier> floorIdentifiers = Set.of(new FloorIdentifier("0"), new FloorIdentifier("1"));
-        final Building building = new Building(floorIdentifiers, 1);
+        final LinkedHashSet<FloorIdentifier> floors = new LinkedHashSet<>();
+        floors.add(new FloorIdentifier("0"));
+        floors.add(new FloorIdentifier("1"));
+        final Building building = new Building(floors, 1);
 
         // WHEN
         final Optional<Monitor> monitor = building.monitorOf(new FloorIdentifier("0"));
@@ -28,8 +31,10 @@ class BuildingTest {
     @Test
     void givenABuildingWithTwoFloors_whenMonitorOfIsCalledOfNotExistingFloor_thenItShouldReturnEmptyValue() {
         // GIVEN
-        final Set<FloorIdentifier> floorIdentifiers = Set.of(new FloorIdentifier("0"), new FloorIdentifier("1"));
-        final Building building = new Building(floorIdentifiers, 1);
+        final LinkedHashSet<FloorIdentifier> floors = new LinkedHashSet<>();
+        floors.add(new FloorIdentifier("0"));
+        floors.add(new FloorIdentifier("1"));
+        final Building building = new Building(floors, 1);
 
         // WHEN
         final Optional<Monitor> monitor = building.monitorOf(new FloorIdentifier("empty"));

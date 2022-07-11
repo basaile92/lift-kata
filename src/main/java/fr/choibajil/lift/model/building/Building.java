@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class Building {
     @Setter
     private List<Lift> lifts;
 
-    public Building(final Set<FloorIdentifier> floors, final int numberOfLifts) {
+    public Building(final LinkedHashSet<FloorIdentifier> floors, final int numberOfLifts) {
         this.monitors = floors.stream().map(Monitor::of).collect(Collectors.toSet());
         this.lifts = IntStream.range(0, numberOfLifts).mapToObj(i -> new Lift(floors.stream().toList().get(0), floors)).collect(toList());
     }

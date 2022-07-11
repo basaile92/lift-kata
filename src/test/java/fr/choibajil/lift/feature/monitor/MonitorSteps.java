@@ -12,6 +12,7 @@ import io.cucumber.java.fr.Étantdonné;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,15 +32,16 @@ public class MonitorSteps {
 
     @Étantdonné("un immeuble de cinq étages")
     public void un_immeuble_de_cinq_etages() {
+        LinkedHashSet<FloorIdentifier> floors = new LinkedHashSet<>();
+        floors.add(new FloorIdentifier("0"));
+        floors.add(new FloorIdentifier("1"));
+        floors.add(new FloorIdentifier("2"));
+        floors.add(new FloorIdentifier("3"));
+        floors.add(new FloorIdentifier("4"));
+
         monitorScenarioState.setCurrentMonitor(Monitor.of(new FloorIdentifier("1")));
         monitorScenarioState.setBuilding(
-                new Building(new HashSet<>(asList(
-                        new FloorIdentifier("0"),
-                        new FloorIdentifier("1"),
-                        new FloorIdentifier("2"),
-                        new FloorIdentifier("3"),
-                        new FloorIdentifier("4"))),
-                        1));
+                new Building(floors, 1));
     }
 
     @Étantdonné("un ascenseur situé au premier étage")

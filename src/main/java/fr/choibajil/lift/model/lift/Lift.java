@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ class Lift {
         return liftCommands;
     }
 
-    public Lift(final FloorIdentifier currentFloor, final Set<FloorIdentifier> floors) {
+    public Lift(final FloorIdentifier currentFloor, final LinkedHashSet<FloorIdentifier> floors) {
         this.currentFloor = currentFloor;
         this.currentDirection = UP;
         this.availableFloors = floors;

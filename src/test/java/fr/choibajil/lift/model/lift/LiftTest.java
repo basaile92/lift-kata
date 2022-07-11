@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static fr.choibajil.lift.model.common.Direction.DOWN;
@@ -20,7 +21,7 @@ class LiftTest {
 
     @BeforeEach
     void init() {
-        final Set<FloorIdentifier> floors = new HashSet<>();
+        final LinkedHashSet<FloorIdentifier> floors = new LinkedHashSet<>();
         floors.add(new FloorIdentifier("0"));
         floors.add(new FloorIdentifier("1"));
         floors.add(new FloorIdentifier("2"));
